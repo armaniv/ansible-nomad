@@ -35,29 +35,6 @@ The Ansible playbooks then further refine OS configuration, perform nomad
 software download and installation, and the initialization of nodes
 into a ready to use cluster.
 
-## Designed for Ansible Galaxy
-
-This role is designed to be installed via the `ansible-galaxy` command
-instead of being directly run from the git repository.
-
-You should install it like this:
-
-```
-ansible-galaxy install brianshumate.nomad
-```
-
-You'll want to make sure you have write access to `/etc/ansible/roles/` since
-that is where the role will be installed by default, or define your own
-Ansible role path by creating a `$HOME/.ansible.cfg` or even `./anisible.cfg`
-file with these contents:
-
-```
-[defaults]
-roles_path = PATH_TO_ROLES
-```
-
-Change `PATH_TO_ROLES` to a directory that you have write access to.
-
 ## Quick Start
 
 Begin from the top level directory of this project and use the following
@@ -69,10 +46,10 @@ steps to get up and running:
  * 10.1.42.70 nomad1.local nomad1
  * 10.1.42.71 nomad2.local nomad2
  * 10.1.42.72 nomad3.local nomad3
-3. cd `$PATH_TO_ROLES/brianshumate.conusul/examples`
+3. cd `/PATH_TO/ansible-nomad/examples/`
 4. `vagrant up`
 
-By default, this project will install Debian 8 based cluster nodes. If you
+By default, this project will install Ubuntu 16.04 based cluster nodes. If you
 prefer, it can also install CentOS 7 based nodes by changing the command
 in step 4 to the following:
 
@@ -88,7 +65,7 @@ BOX_NAME="centos/7" vagrant up
   * VirtualBox version 5.2.30
   * Vagrant version 2.2.4
   * Vagrant Hosts version 2.8.3
-2. This project uses Debian 8 (Jessie) by default, but you can choose other OS
+2. This project uses Ubuntu 16.04 by default, but you can choose other OS
    with the *BOX_NAME* environment variable
 3. The `bin/preinstall` shell script performs the following actions for you:
  * Adds each node's host information to the host machine's `/etc/hosts`

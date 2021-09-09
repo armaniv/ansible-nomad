@@ -6,7 +6,7 @@
   become: yes
   become_user: root
   roles:
-    - { role: brianshumate.nomad }
+    - role: '/PATH_TO/ansible-nomad' 
 
   tasks:
     - name: Start nomad

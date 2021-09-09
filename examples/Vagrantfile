@@ -7,8 +7,9 @@
 ANSIBLE_PLAYBOOK = ENV['ANSIBLE_PLAYBOOK'] || "site.yml"
 VAGRANTFILE_API_VERSION = "2"
 BOX_MEM = ENV['BOX_MEM'] || "1536"
-BOX_NAME =  ENV['BOX_NAME'] || "debian/jessie64"
+BOX_NAME =  ENV['BOX_NAME'] || "bento/ubuntu-16.04"
 CLUSTER_HOSTS = ENV['CLUSTER_HOSTS'] || "vagrant_hosts"
+NOMAD_DOCKER_ENABLE = ENV['NOMAD_DOCKER_ENABLE'] || "true"
 
 Vagrant.require_version ">= 1.5.0"
 
@@ -28,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
-    if ENV['NOMAD_DOCKER_ENABLE'] == "true"
+    if NOMAD_DOCKER_ENABLE == "true"
       nomad1_config.vm.provision "docker"
     end
     nomad1_config.vm.provision :hosts do |provisioner|
@@ -50,7 +51,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
-    if ENV['NOMAD_DOCKER_ENABLE'] == "true"
+    if NOMAD_DOCKER_ENABLE == "true"
       nomad2_config.vm.provision "docker"
     end
     nomad2_config.vm.provision :hosts do |provisioner|
@@ -72,7 +73,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
-    if ENV['NOMAD_DOCKER_ENABLE'] == "true"
+    if NOMAD_DOCKER_ENABLE == "true"
       nomad3_config.vm.provision "docker"
     end
     nomad3_config.vm.provision :hosts do |provisioner|
@@ -85,6 +86,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Extra Ansible variables can be defined here
       ansible.extra_vars = {
         nomad_magic: 9001,
+        nomad_bind_address: "0.0.0.0",
+        nomad_iface: "eth1",
+        nomad_node_role: "both",
+        nomad_acl_enabled: "true",
+        nomad_version: "1.1.4",
+        nomad_docker_enable: "true",
       }
       ansible.playbook = ANSIBLE_PLAYBOOK
       ansible.limit = "all"
